@@ -1,6 +1,6 @@
 import pygame.draw
 import pygame
-from .constants import RED, WHITE, SQUARE_SIZE, GRAY, CROWN
+from .constants import RED, WHITE, Border, GRAY, CROWN
 
 
 class Piece:
@@ -10,21 +10,29 @@ class Piece:
     def __init__(self, row, col, color):
         self.row = row
         self.col = col
-        self.color = color
         self.king = False
+        #color and the x to get the size 
+        self.color = color
+        
         self.x = 0
         self.y = 0
-        self.calc_size()
+        self.calc()
 
-    def calc_size(self):
-        self.x = SQUARE_SIZE * self.col + SQUARE_SIZE // 2
-        self.y = SQUARE_SIZE * self.row + SQUARE_SIZE // 2
 
-    def make_king(self):
+
+    def put_crown(self):
         self.king = True
 
+
+    def calc(self):
+        self.x = Border * self.col + Border // 2
+        self.y = Border * self.row + Border // 2
+
+
+
+#using the pygame to make the outline 
     def draw(self, win):
-        radius = SQUARE_SIZE // 2 - self.PADDING
+        radius = Border // 2 - self.PADDING
         pygame.draw.circle(win, GRAY, (self.x, self.y), radius + self.OUTLINE)
         pygame.draw.circle(win, self.color, (self.x, self.y), radius)
         if self.king:
@@ -35,4 +43,4 @@ class Piece:
     def move(self, row,col):
         self.row = row
         self.col = col
-        self.calc_size()
+        self.calc()
