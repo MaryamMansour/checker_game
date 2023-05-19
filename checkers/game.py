@@ -21,6 +21,7 @@ class Game:
     def winner(self):
         return self.board.winner()
 
+
     def reset(self):
         self._init()
 

@@ -17,6 +17,7 @@ def get_row_col_from_mouse(pos):
     row = y // Border
     col = x // Border
     return row, col
+
 def make_red_move(game):
     # Get all valid moves for the red player
     red_moves = game.board.get_valid_moves(game.selected)
@@ -57,11 +58,16 @@ def main():
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
                 game.select(row, col)
-                make_red_move(game)
+                if make_red_move(game) == False:
+                    print(WHITE)
+                    run =False
+
+
 
 
         game.update()
-    
+
+
     pygame.quit()
 
 main()

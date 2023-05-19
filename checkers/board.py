@@ -77,9 +77,12 @@ class Board:
             return WHITE
         elif self.white_left <= 0:
             return RED
-        
-        return None 
-    
+
+        return None
+
+
+
+        return None
     def get_valid_moves(self, piece):
         moves = {}
         left = piece.col - 1
