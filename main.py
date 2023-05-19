@@ -2,6 +2,8 @@ import pygame
 from checkers.constants import WIDTH, HEIGHT, Border, RED, WHITE
 from checkers.game import Game
 from Algo.agent import minimax
+from Algo.agent import alpha_beta
+
 
 import random
 import sys
@@ -105,14 +107,63 @@ def level_menu():
                 pos = pygame.mouse.get_pos()
                 if easy_x <= pos[0] <= easy_x + easy_width and easy_y <= pos[1] <= easy_y + easy_height:
                     return 1
+
                 elif medium_x <= pos[0] <= medium_x + medium_width and medium_y <= pos[1] <= medium_y + medium_height:
                     return 2
                 elif hard_x <= pos[0] <= hard_x + hard_width and hard_y <= pos[1] <= hard_y + hard_height:
                     return 3
-#the main 
+#the main
+
+
+
+
+
+def algoritm_menu():
+    # Create a Pygame font object
+    font = pygame.font.Font(None, 36)
+
+    # Create Pygame text objects for the level options
+    mini_text = font.render("1- Minimax ", True, (255, 255, 255))
+    alpha_text = font.render("2- Alpha bita", True, (255, 255, 255))
+
+
+    # Get the dimensions of the text objects
+    mini_width, mini_height = mini_text.get_size()
+    alpha_width, alpha_height = alpha_text.get_size()
+
+
+    # Calculate the position to draw the text objects
+    mini_x = (WIDTH - mini_width) // 4
+    mini_y = (HEIGHT - mini_height ) // 4 - 50
+    alpha_x = (WIDTH - alpha_width) // 4
+    alpha_y = (HEIGHT - alpha_height) // 4
+
+
+    # Draw the text objects onto the Pygame window
+    WIN.blit(mini_text, (mini_x, mini_y))
+    WIN.blit(alpha_text, (alpha_x, alpha_y))
+
+    # Update the Pygame display
+    pygame.display.update()
+
+    # Wait for the user to click on a level option
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if mini_x <= pos[0] <= mini_x + mini_width and mini_y <= pos[1] <= mini_y + mini_height:
+                    return 1
+
+                elif alpha_x <= pos[0] <= alpha_x + alpha_width and alpha_y <= pos[1] <= alpha_y + alpha_height:
+                    return 2
+
 def main():
     run = True
     clock = pygame.time.Clock()
+    algo = algoritm_menu()
     level = level_menu()
     game = Game(WIN)
 
@@ -120,19 +171,29 @@ def main():
         clock.tick(FPS)
 
         if game.turn == WHITE:
-            if level==1:
+            if level == 1 & algo == 1:
 
+                value, new_board = minimax(game.get_board(), 1, WHITE, game)
+                game.move_agent(new_board)
+            elif level==2& algo == 1:
+                value, new_board = minimax(game.get_board(), 2, WHITE, game)
+                game.move_agent(new_board)
+            elif level==3& algo == 1:
                 value, new_board = minimax(game.get_board(), 3, WHITE, game)
                 game.move_agent(new_board)
-            elif level==2:
-                value, new_board = minimax(game.get_board(), 3, WHITE, game)
+            elif level == 1 & algo == 2:
+
+                value, new_board = alpha_beta(game.get_board(), 1, WHITE, game)
                 game.move_agent(new_board)
-            elif level==3:
-                value, new_board = minimax(game.get_board(), 3, WHITE, game)
+            elif level==2& algo == 2:
+                value, new_board = alpha_beta(game.get_board(), 2, WHITE, game)
+                game.move_agent(new_board)
+            elif level==3& algo == 2:
+                value, new_board = alpha_beta(game.get_board(), 3, WHITE, game)
                 game.move_agent(new_board)
         if game.winner() != None:
             draw_winner(game.winner())
-            run = False
+            #run = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
