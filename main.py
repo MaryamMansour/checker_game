@@ -65,20 +65,71 @@ def draw_winner(winner):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+def level_menu():
+    # Create a Pygame font object
+    font = pygame.font.Font(None, 36)
 
+    # Create Pygame text objects for the level options
+    easy_text = font.render("1 Easy", True, (255, 255, 255))
+    medium_text = font.render("2 Medium", True, (255, 255, 255))
+    hard_text = font.render("3 Hard", True, (255, 255, 255))
+
+    # Get the dimensions of the text objects
+    easy_width, easy_height = easy_text.get_size()
+    medium_width, medium_height = medium_text.get_size()
+    hard_width, hard_height = hard_text.get_size()
+
+    # Calculate the position to draw the text objects
+    easy_x = (WIDTH - easy_width) // 2
+    easy_y = (HEIGHT - easy_height) // 2 - 50
+    medium_x = (WIDTH - medium_width) // 2
+    medium_y = (HEIGHT - medium_height) // 2
+    hard_x = (WIDTH - hard_width) // 2
+    hard_y = (HEIGHT - hard_height) // 2 + 50
+
+    # Draw the text objects onto the Pygame window
+    WIN.blit(easy_text, (easy_x, easy_y))
+    WIN.blit(medium_text, (medium_x, medium_y))
+    WIN.blit(hard_text, (hard_x, hard_y))
+
+    # Update the Pygame display
+    pygame.display.update()
+
+    # Wait for the user to click on a level option
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if easy_x <= pos[0] <= easy_x + easy_width and easy_y <= pos[1] <= easy_y + easy_height:
+                    return 1
+                elif medium_x <= pos[0] <= medium_x + medium_width and medium_y <= pos[1] <= medium_y + medium_height:
+                    return 2
+                elif hard_x <= pos[0] <= hard_x + hard_width and hard_y <= pos[1] <= hard_y + hard_height:
+                    return 3
 #the main 
 def main():
     run = True
     clock = pygame.time.Clock()
+    level = level_menu()
     game = Game(WIN)
 
     while run:
         clock.tick(FPS)
-        
-        if game.turn == WHITE:
-            value, new_board = minimax(game.get_board(), 3, WHITE, game)
-            game.move_agent(new_board)
 
+        if game.turn == WHITE:
+            if level==1:
+
+                value, new_board = minimax(game.get_board(), 3, WHITE, game)
+                game.move_agent(new_board)
+            elif level==2:
+                value, new_board = minimax(game.get_board(), 3, WHITE, game)
+                game.move_agent(new_board)
+            elif level==3:
+                value, new_board = minimax(game.get_board(), 3, WHITE, game)
+                game.move_agent(new_board)
         if game.winner() != None:
             draw_winner(game.winner())
             run = False
@@ -86,7 +137,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
