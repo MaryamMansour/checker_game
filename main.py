@@ -20,12 +20,14 @@ def get_row_col_from_mouse(pos):
 def make_red_move(game):
     # Get all valid moves for the red player
     red_moves = game.board.get_valid_moves(game.selected)
-
-    # Select a random move
-    move = random.choice(list(red_moves.keys()))
-
-    # Perform the selected move
-    game._move(move[0], move[1])
+    if len(red_moves)>0:
+        # Select a random move
+        move = random.choice(list(red_moves.keys()))
+        # Perform the selected move
+        game._move(move[0], move[1])
+        return True
+    else:
+        return False
 #the main 
 def main():
     run = True
@@ -56,6 +58,7 @@ def main():
                 row, col = get_row_col_from_mouse(pos)
                 game.select(row, col)
                 make_red_move(game)
+
 
         game.update()
     
