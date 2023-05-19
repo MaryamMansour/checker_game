@@ -166,6 +166,8 @@ def main():
     algo = algoritm_menu()
     level = level_menu()
     game = Game(WIN)
+    alpha =float('-inf')
+    beta = float('inf')
 
     while run:
         clock.tick(FPS)
@@ -173,28 +175,31 @@ def main():
         if game.turn == WHITE:
             if level == 1 :
                 if algo == 1:
-                 value, new_board = minimax(game.get_board(), 3, WHITE, game)
-                 game.move_agent(new_board)
+                  value, new_board = minimax(game.get_board(), 3, WHITE, game)
+                  game.move_agent(new_board)
+                if algo ==2:
+                  value, new_board = alpha_beta(game.get_board(), 3,alpha,beta , WHITE, game)
+                  game.move_agent(new_board)
+
+
             elif level==2:
                 if algo == 1:
-                 value, new_board = minimax(game.get_board(), 3, WHITE, game)
-                 game.move_agent(new_board)
+                  value, new_board = minimax(game.get_board(), 3,WHITE, game)
+                  game.move_agent(new_board)
+                if algo == 2:
+                     value, new_board = alpha_beta(game.get_board(), 3,alpha,beta , WHITE, game)
+                     game.move_agent(new_board)
+
             elif level==3:
                 if algo == 1:
-                 value, new_board = minimax(game.get_board(), 3, WHITE, game)
-                 game.move_agent(new_board)
-            elif level == 1 :
-                if algo == 2:
-                 value, new_board = alpha_beta(game.get_board(), 1, WHITE, game)
-                 game.move_agent(new_board)
-            elif level==2:
-                if algo == 2:
-                  value, new_board = alpha_beta(game.get_board(), 2, WHITE, game)
+                  value, new_board = minimax(game.get_board(), 3, WHITE, game)
                   game.move_agent(new_board)
-            elif level==3:
                 if algo == 2:
-                  value, new_board = alpha_beta(game.get_board(), 3, WHITE, game)
-                  game.move_agent(new_board)
+                     value, new_board = alpha_beta(game.get_board(),  3,alpha,beta, WHITE, game)
+                     game.move_agent(new_board)
+
+
+
         if game.winner() != None:
             draw_winner(game.winner())
             #run = False

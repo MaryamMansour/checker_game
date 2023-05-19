@@ -43,7 +43,7 @@ def alpha_beta(state, depth, alpha, beta, maxi, game):
         maxScore = float('-inf')
         moveB = None
         for m in get_all_moves(state, WHITE_player, game):
-            val = minimax(m, depth - 1, alpha, beta, False, game)[0]
+            val = minimax(m, depth - 1,  False, game)[0]
             maxScore = max(maxScore, val)
             # here we did the same thing but we modify the code 
             if maxScore == val:
@@ -58,7 +58,7 @@ def alpha_beta(state, depth, alpha, beta, maxi, game):
         minScore = float('inf')
         moveB = None
         for m in get_all_moves(state, RED_player, game):
-            val = minimax(m, depth - 1, alpha, beta, True, game)[0]
+            val = minimax(m, depth - 1,  True, game)[0]
             minScore = min(minScore, val)
             if minScore == val:
                 moveB = m
