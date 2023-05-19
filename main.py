@@ -48,7 +48,8 @@ def main():
 
         if game.winner() != None:
             print(game.winner())
-            run = False
+            break
+            #run = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -60,7 +61,8 @@ def main():
                 game.select(row, col)
                 if make_red_move(game) == False:
                     print(WHITE)
-                    run =False
+                    break
+                    #run =False
 
 
 
