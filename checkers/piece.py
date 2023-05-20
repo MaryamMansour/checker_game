@@ -20,11 +20,11 @@ class Piece:
 
 
 
-    def put_crown(self):
+    def put_crown_on_board(self):
         self.king = True
 
 
-    def calc(self):
+    def calculate_coordinate(self):
         self.x = Border * self.col + Border // 2
         self.y = Border * self.row + Border // 2
 
@@ -43,4 +43,4 @@ class Piece:
     def move(self, row,col):
         self.row = row
         self.col = col
-        self.calc()
+        self.calculate_coordinate()

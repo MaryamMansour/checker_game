@@ -8,7 +8,7 @@ class Game:
         self.win = win
     
     def update(self):
-        self.board.draw(self.win)
+        self.board.draw_pieces_on_board(self.win)
         self.draw_valid_moves(self.valid_moves)
         pygame.display.update()
 
@@ -18,8 +18,8 @@ class Game:
         self.turn = RED
         self.valid_moves = {}
 
-    def winner(self):
-        return self.board.winner()
+    def get_winner(self):
+        return self.board.get_winner()
 
 
     def reset(self):
@@ -35,7 +35,7 @@ class Game:
         piece = self.board.get_piece(row, col)
         if piece != 0 and piece.color == self.turn:
             self.selected = piece
-            self.valid_moves = self.board.get_valid_moves(piece)
+            self.valid_moves = self.board.get_piece_valid_moves(piece)
             return True
             
         return False
@@ -46,7 +46,7 @@ class Game:
             self.board.move(self.selected, row, col)
             skipped = self.valid_moves[(row, col)]
             if skipped:
-                self.board.remove(skipped)
+                self.board.remove_piece(skipped)
             self.change_turn()
         else:
             return False
