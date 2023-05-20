@@ -4,15 +4,15 @@ from checkers.game import Game
 from Algo.agent import minimax
 from Algo.agent import alpha_beta
 
-
 import random
 import sys
+
 FPS = 60
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Game(checkers)')
 
-pygame.font.init() # Initialize the Pygame font module
+pygame.font.init()  # Initialize the Pygame font module
 
 
 def get_row_col_from_mouse(pos):
@@ -21,10 +21,11 @@ def get_row_col_from_mouse(pos):
     col = x // Border
     return row, col
 
+
 def make_red_move(game):
     # Get all valid moves for the red player
-    red_moves = game.board.get_valid_moves(game.selected)
-    if len(red_moves)>0:
+    red_moves = game.board.get_piece_valid_moves(game.selected)
+    if len(red_moves) > 0:
         # Select a random move
         move = random.choice(list(red_moves.keys()))
         # Perform the selected move
@@ -32,6 +33,8 @@ def make_red_move(game):
         return True
     else:
         return False
+
+
 def draw_winner(winner):
     # Create a new Pygame window
     winner_win = pygame.display.set_mode((200, 100))
@@ -67,6 +70,8 @@ def draw_winner(winner):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+
 def level_menu():
     # Create a Pygame font object
     font = pygame.font.Font(None, 36)
@@ -112,10 +117,9 @@ def level_menu():
                     return 2
                 elif hard_x <= pos[0] <= hard_x + hard_width and hard_y <= pos[1] <= hard_y + hard_height:
                     return 3
-#the main
 
 
-
+# the main
 
 
 def algoritm_menu():
@@ -123,21 +127,18 @@ def algoritm_menu():
     font = pygame.font.Font(None, 36)
 
     # Create Pygame text objects for the level options
-    mini_text = font.render("1   - MINIMAX " , True, (255, 255, 255))
-    alpha_text = font.render("2  -  ALPHA-BETA  " , True, (255, 255, 255))
-
+    mini_text = font.render("1- MINIMAX ", True, (255, 255, 255))
+    alpha_text = font.render("2- ALPHA-BETA", True, (255, 255, 255))
 
     # Get the dimensions of the text objects
     mini_width, mini_height = mini_text.get_size()
     alpha_width, alpha_height = alpha_text.get_size()
 
-
     # Calculate the position to draw the text objects
     mini_x = (WIDTH - mini_width) // 4
-    mini_y = (HEIGHT - mini_height ) // 4 - 50
+    mini_y = (HEIGHT - mini_height) // 4 - 50
     alpha_x = (WIDTH - alpha_width) // 4
     alpha_y = (HEIGHT - alpha_height) // 4
-
 
     # Draw the text objects onto the Pygame window
     WIN.blit(mini_text, (mini_x, mini_y))
@@ -160,49 +161,47 @@ def algoritm_menu():
                 elif alpha_x <= pos[0] <= alpha_x + alpha_width and alpha_y <= pos[1] <= alpha_y + alpha_height:
                     return 2
 
+
 def main():
     run = True
     clock = pygame.time.Clock()
     algo = algoritm_menu()
     level = level_menu()
     game = Game(WIN)
-    alpha =float('-inf')
+    alpha = float('-inf')
     beta = float('inf')
 
     while run:
         clock.tick(FPS)
 
         if game.turn == WHITE:
-            if level == 1 :
+            if level == 1:
                 if algo == 1:
-                  value, new_board = minimax(game.get_board(), 1, WHITE, game)
-                  game.move_agent(new_board)
-                if algo ==2:
-                  value, new_board = alpha_beta(game.get_board(), 1,alpha,beta , WHITE, game)
-                  game.move_agent(new_board)
-
-
-            elif level==2:
-                if algo == 1:
-                  value, new_board = minimax(game.get_board(), 2,WHITE, game)
-                  game.move_agent(new_board)
+                    value, new_board = minimax(game.get_board(), 3, WHITE, game)
+                    game.move_agent(new_board)
                 if algo == 2:
-                     value, new_board = alpha_beta(game.get_board(), 2,alpha,beta , WHITE, game)
-                     game.move_agent(new_board)
+                    value, new_board = alpha_beta(game.get_board(), 3, alpha, beta, WHITE, game)
+                    game.move_agent(new_board)
 
-            elif level==3:
+            elif level == 2:
                 if algo == 1:
-                  value, new_board = minimax(game.get_board(), 3, WHITE, game)
-                  game.move_agent(new_board)
+                    value, new_board = minimax(game.get_board(), 3, WHITE, game)
+                    game.move_agent(new_board)
                 if algo == 2:
-                     value, new_board = alpha_beta(game.get_board(),  3,alpha,beta, WHITE, game)
-                     game.move_agent(new_board)
+                    value, new_board = alpha_beta(game.get_board(), 3, alpha, beta, WHITE, game)
+                    game.move_agent(new_board)
 
+            elif level == 3:
+                if algo == 1:
+                    value, new_board = minimax(game.get_board(), 3, WHITE, game)
+                    game.move_agent(new_board)
+                if algo == 2:
+                    value, new_board = alpha_beta(game.get_board(), 3, alpha, beta, WHITE, game)
+                    game.move_agent(new_board)
 
-
-        if game.winner() != None:
-            draw_winner(game.winner())
-            #run = False
+        if game.get_winner() is not None:
+            draw_winner(game.get_winner())
+            # run = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -212,17 +211,14 @@ def main():
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
                 game.select(row, col)
-                if make_red_move(game) == False:
-                    draw_winner(game.winner())
+                if not make_red_move(game):
+                    draw_winner(game.get_winner())
                     break
-                    #run =False
-
-
-
+                    # run =False
 
         game.update()
 
-
     pygame.quit()
+
 
 main()
